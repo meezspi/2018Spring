@@ -22,11 +22,12 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
     "express": "4.16.2",
     "jquery": "^3.3.1",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "popper.js": "^1.12.9",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
@@ -47,10 +48,9 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "nodemon": "^1.15.1",
+    "nodemon": "^1.17.3",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
-    "tsc": "^1.20150623.0",
     "typescript": "^2.5.3"
   }
 }
