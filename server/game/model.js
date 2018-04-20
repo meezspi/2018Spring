@@ -1,6 +1,6 @@
 var axios = require("axios");
 
-const QuotesStack = [
+const QuotesStack =  [
     "Wisdom is the reward you get for a lifetime of listening when you'd have preferred to talk. -Doug Larson",
     "If you make listening and observation your occupation, you will gain much more than you can by talk. -Robert Baden-Powell",
     "One of the most sincere forms of respect is actually listening to what another has to say. -Bryant H. McGill",
@@ -100,38 +100,54 @@ const QuotesStack = [
     "Dreaming, after all, is a form of planning. -Gloria Steinem",
     "You can’t use up creativity.  The more you use, the more you have. -Maya Angelou",
     "If you look at what you have in life, you’ll always have more. If you look at what you don’t have in life, you’ll never have enough. -Oprah Winfrey",
-    "Stay committed to your decisions and stay flexible in your approach. It's the end you're after. -Anthony Robbins"
-    
-];
+    "Stay committed to your decesions and stay flexible in your approach. It's the end you're after. -Anthony Robbins"
+    ];
 
 var iCurrentQuote = 0;
 
 var PicturesStack = [
     "https://media3.s-nbcnews.com/j/newscms/2018_14/2387596/180404-oklahoma-city-capitol-teacher-protest-ew-323p_93b119734c532d143960db8f96475eaf.focal-1000x500.jpg",
     "https://media1.s-nbcnews.com/j/newscms/2018_14/2387601/180404-oklahoma-city-capitol-teacher-protest-ew-322p_f37368c21208ba28395347307828b056.fit-560w.jpg"
-
 ];
 
 axios.get('https://api.imgflip.com/get_memes')
-    .then( response => PicturesStack = response.data.data.memes )
+        .then( response => PicturesStack = response.data.data.memes )
 
 var iCurrentPicture = 0;
 
 
 function Game() {
-    this.Players = [];
-    this.DealerID = null;
+        this.Players = [];
+        this.DealerId = null;
 
-    this.PlayedQuotes = [];
-    this.Picture = null;
+        this.PlayedQuotes = [];
+        this.Picture = null;
 
-    this.GetQuotes = () => QuotesStack.slice(iCurrentQuote, iCurrentQuote += 7);
-    this.FlipPicture = () => this.Picture = PicturesStack[iCurrentPicture = (iCurrentPicture+1) % PicturesStack.length];
-    this.SubmitQuote = (text, playerId) => this.PlayedQuotes.push({ Text: text,PlayerID:playerID});
-    this.ChooseQuote = text => {
-        this.PlayedQuotes.find(x=>x.Text == text).Chosen = true;
-        this.DealerID = this.Players[this.DealerID = (this.DealerId + 1) % this.Players.length]
-    }
+        this.GetQuotes = (playerId) => {
+            if(!this.DealerId){
+                this.DealerId = playerId;   
+            }
+            if(this.Players.some(x=> x.PlayerId == playerId)){
+                
+            }else{
+                this.Players.push({ PlayerId: playerId, Name: playerId });
+            }
+                return QuotesStack.slice(iCurrentQuote, iCurrentQuote += 7);   
+        }
+
+        this.FlipPicture = () => this.Picture = PicturesStack[iCurrentPicture = (iCurrentPicture+1) % PicturesStack.length ];
+
+        this.SubmitQuote = (text, playerId) => {
+            if(playerId != this.DealerId){
+            this.PlayedQuotes.push({ Text: text, PlayerId: playerId });
+            }
+        }
+        this.ChooseQuote = text => {
+            const chosenQuote = this.PlayedQuotes.find(x=> x.Text == text)
+            chosenQuote.Chosen = true;
+            this.Players.find(x=> x.PlayerId == chosenQuote.PlayerId).Score++;
+            this.DealerId = this.Players[this.Players.findIndex(x=> x.PlayerId == this.DealerId)  + 1 % this.Players.length ].PlayerId;
+        } 
 }
 
-module.exports = Game; 
+module.exports = Game;
